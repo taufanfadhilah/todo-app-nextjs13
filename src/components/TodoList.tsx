@@ -1,4 +1,7 @@
 import React from "react";
+import { cn } from "@/lib/utils";
+
+// components
 import {
   Card,
   CardContent,
@@ -7,33 +10,49 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
-import { Check, Trash2, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import ModalRemoveTodo from "./ModalRemoveTodo";
 
-function TodoList() {
+// stores
+import { store } from "@/store";
+import { Todo, updateCheck } from "@/store/todoSlice";
+
+interface TodoListProps extends Todo {}
+
+function TodoList({ title, note, isDone }: TodoListProps) {
+  const handleUpdateCheck = () => {
+    store.dispatch(
+      updateCheck({
+        title,
+      })
+    );
+  };
+
   return (
     <Card className="">
       <CardHeader>
-        <CardTitle className="flex justify-between">
-          Title
+        <CardTitle
+          className={cn("flex justify-between", {
+            "line-through": isDone,
+          })}
+        >
+          #{title}
           <div className="flex gap-4">
-            <Button variant={"outline"}>
-              <Check />
-            </Button>
-            <Button>
-              <X />
-            </Button>
-            <ModalRemoveTodo />
+            {isDone ? (
+              <Button onClick={handleUpdateCheck}>
+                <X />
+              </Button>
+            ) : (
+              <Button variant={"outline"} onClick={handleUpdateCheck}>
+                <Check />
+              </Button>
+            )}
+            <ModalRemoveTodo title={title} />
           </div>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique,
-          provident! Ipsa laborum praesentium facere veniam pariatur iure
-          inventore! Quod minus praesentium accusantium numquam sit labore
-          veniam eligendi voluptatem, quos obcaecati!
-        </CardDescription>
+        <CardDescription>{note}</CardDescription>
       </CardContent>
     </Card>
   );

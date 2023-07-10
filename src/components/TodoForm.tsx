@@ -1,3 +1,8 @@
+"use client";
+
+import React, { useRef } from "react";
+
+// components
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,8 +14,40 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { addTodo } from "@/store/todoSlice";
+
+// store
+import { store } from "@/store";
 
 export default function TodoForm() {
+  const form = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    const target = event.target as typeof event.target & {
+      title: {
+        value: string;
+      };
+      note: {
+        value: string;
+      };
+    };
+    const data = {
+      title: target.title.value,
+      note: target.note.value,
+    };
+
+    store.dispatch(
+      addTodo({
+        title: data.title,
+        note: data.note,
+        isDone: false,
+      })
+    );
+
+    form.current?.reset();
+  };
+
   return (
     <Card className="h-fit">
       <CardHeader>
@@ -19,24 +56,26 @@ export default function TodoForm() {
           Stay organized and boost your productivity with Task Tracker.{" "}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <form>
+      <form onSubmit={handleSubmit} ref={form}>
+        <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Title</Label>
-              <Input id="name" />
+              <Label htmlFor="title">Title</Label>
+              <Input id="title" name="title" />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Note</Label>
-              <Input id="name" />
+              <Label htmlFor="note">Note</Label>
+              <Input id="note" name="note" />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Reset</Button>
-        <Button>Add</Button>
-      </CardFooter>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button type="reset" variant="outline">
+            Reset
+          </Button>
+          <Button type="submit">Add</Button>
+        </CardFooter>
+      </form>
     </Card>
   );
 }

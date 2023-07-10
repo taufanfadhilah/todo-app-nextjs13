@@ -10,11 +10,21 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
+import { store } from "@/store";
+import { removeTodo } from "@/store/todoSlice";
 
-function ModalRemoveTodo() {
+interface ModalRemoveTodoProps {
+  title: string;
+}
+
+function ModalRemoveTodo({ title }: ModalRemoveTodoProps) {
+  const handleRemoveTodo = () => {
+    store.dispatch(removeTodo({ title }));
+  };
+
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant={"destructive"}>
           <Trash2 />
         </Button>
@@ -28,7 +38,11 @@ function ModalRemoveTodo() {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button type="submit" variant={"destructive"}>
+          <Button
+            type="submit"
+            variant={"destructive"}
+            onClick={handleRemoveTodo}
+          >
             Delete
           </Button>
         </DialogFooter>
