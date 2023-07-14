@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,22 +10,27 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
-import { store } from "@/store";
-import { removeTodo } from "@/store/todoSlice";
+import { useRemoveTodoMutation } from "@/services/todo";
 
 interface ModalRemoveTodoProps {
+  id: string;
   title: string;
 }
 
-function ModalRemoveTodo({ title }: ModalRemoveTodoProps) {
-  const handleRemoveTodo = () => {
-    store.dispatch(removeTodo({ title }));
+function ModalRemoveTodo({ id }: ModalRemoveTodoProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [removeTodo] = useRemoveTodoMutation();
+
+  const handleRemoveTodo = async () => {
+    removeTodo(id);
+    setIsOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant={"destructive"}>
+        <Button variant={"destructive"} onClick={() => setIsOpen(true)}>
           <Trash2 />
         </Button>
       </DialogTrigger>

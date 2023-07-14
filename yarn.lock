@@ -303,6 +303,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/client@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@prisma/client@npm:5.0.0"
+  dependencies:
+    "@prisma/engines-version": "npm:4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584"
+  peerDependencies:
+    prisma: "*"
+  peerDependenciesMeta:
+    prisma:
+      optional: true
+  checksum: 2b3f54083c0f1620e0014de6e1325ecefff407be654392f784dc6f3e21f831e31b3e46599d45f2ecc3d255f673857c449fb807cdb75913d49d762786812feb34
+  languageName: node
+  linkType: hard
+
+"@prisma/engines-version@npm:4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584":
+  version: 4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584
+  resolution: "@prisma/engines-version@npm:4.17.0-26.6b0aef69b7cdfc787f822ecd7cdc76d5f1991584"
+  checksum: 2d1200793c833f59f5895009fdcb812b4f1d640eb74b57e906208fd9e5d90c2f1cef68a9ec3956543f03e085008eef19f6fc3d219243b7548c1b9cbb9a9b279c
+  languageName: node
+  linkType: hard
+
+"@prisma/engines@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@prisma/engines@npm:5.0.0"
+  checksum: 1d492472c520982f800410c9ed5afc2d80ebe4ba5e0eb2cb5a947fa36e194c431da3504ce8e9e8f6b7f815a5028012ee523d96458b8fb0ee11d952c9fe757da8
+  languageName: node
+  linkType: hard
+
 "@radix-ui/primitive@npm:1.0.1":
   version: 1.0.1
   resolution: "@radix-ui/primitive@npm:1.0.1"
@@ -3696,6 +3724,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prisma@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "prisma@npm:5.0.0"
+  dependencies:
+    "@prisma/engines": "npm:5.0.0"
+  bin:
+    prisma: build/index.js
+  checksum: 2dde0374b22f6f380f7450873ac45015639c5357928e5c14858c36ce875c25d135d67ec6e804b9eac5bb1d0ea4716458d29a12e9884ae841ee9feb2a19d849fe
+  languageName: node
+  linkType: hard
+
 "promise-retry@npm:^2.0.1":
   version: 2.0.1
   resolution: "promise-retry@npm:2.0.1"
@@ -4524,6 +4563,7 @@ __metadata:
   resolution: "todo-app@workspace:."
   dependencies:
     "@hookform/resolvers": "npm:^3.1.1"
+    "@prisma/client": "npm:5.0.0"
     "@radix-ui/react-dialog": "npm:^1.0.4"
     "@radix-ui/react-label": "npm:^2.0.2"
     "@radix-ui/react-separator": "npm:^1.0.3"
@@ -4540,6 +4580,7 @@ __metadata:
     lucide-react: "npm:^0.259.0"
     next: "npm:13.4.9"
     postcss: "npm:8.4.25"
+    prisma: "npm:^5.0.0"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     react-hook-form: "npm:^7.45.1"

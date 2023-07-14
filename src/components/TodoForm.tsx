@@ -17,10 +17,9 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addTodo } from "@/store/todoSlice";
 
 // store
-import { store } from "@/store";
+import { useInsertTodoMutation } from "@/services/todo";
 
 type TodoForm = {
   title: string;
@@ -44,14 +43,10 @@ export default function TodoForm() {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<TodoForm> = (data) => {
-    store.dispatch(
-      addTodo({
-        title: data.title,
-        note: data.note,
-        isDone: false,
-      })
-    );
+  const [insertTodo] = useInsertTodoMutation();
+
+  const onSubmit: SubmitHandler<TodoForm> = async (data) => {
+    insertTodo(data);
     reset();
   };
 

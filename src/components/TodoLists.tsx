@@ -1,28 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 // components
 import TodoList from "./TodoList";
 
 // store
-import { store } from "@/store";
+import { Todo } from "@prisma/client";
+import { useGetAllTodoQuery } from "@/services/todo";
 
 function TodoLists() {
-  const [todoList, setTodoList] = useState(store.getState().todo);
-
-  store.subscribe(() => {
-    setTodoList(store.getState().todo);
-  });
+  const { data } = useGetAllTodoQuery();
 
   return (
     <div className="flex flex-col gap-4 h-[700px] overflow-y-scroll">
-      {todoList?.length ? (
-        todoList.map((todo) => (
+      {data?.data?.length ? (
+        data.data.map((todo: Todo) => (
           <TodoList
+            id={todo.id}
             title={todo.title}
             note={todo.note}
-            isDone={todo.isDone}
+            isChecked={todo.isChecked}
             key={todo.title}
           />
         ))

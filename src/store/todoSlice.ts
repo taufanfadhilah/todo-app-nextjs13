@@ -1,10 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-
-export interface Todo {
-  title: string;
-  note: string;
-  isDone: boolean;
-}
+import Todo from "@/types/todo";
 
 const initialState: Todo[] = [];
 
@@ -20,7 +15,7 @@ export const todoSlice = createSlice({
         _state.title === action.payload.title
           ? {
               ..._state,
-              isDone: !_state.isDone,
+              is_checked: !_state.is_checked,
             }
           : _state
       );

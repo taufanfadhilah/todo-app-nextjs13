@@ -14,18 +14,17 @@ import { Check, X } from "lucide-react";
 import ModalRemoveTodo from "./ModalRemoveTodo";
 
 // stores
-import { store } from "@/store";
-import { Todo, updateCheck } from "@/store/todoSlice";
+import { Todo } from "@prisma/client";
+import { useCheckTodoMutation } from "@/services/todo";
 
-interface TodoListProps extends Todo {}
+interface TodoListProps
+  extends Pick<Todo, "id" | "title" | "note" | "isChecked"> {}
 
-function TodoList({ title, note, isDone }: TodoListProps) {
-  const handleUpdateCheck = () => {
-    store.dispatch(
-      updateCheck({
-        title,
-      })
-    );
+function TodoList({ id, title, note, isChecked }: TodoListProps) {
+  const [checkTodo] = useCheckTodoMutation();
+
+  const handleUpdateCheck = async () => {
+    checkTodo(id);
   };
 
   return (
@@ -33,12 +32,12 @@ function TodoList({ title, note, isDone }: TodoListProps) {
       <CardHeader>
         <CardTitle
           className={cn("flex justify-between", {
-            "line-through": isDone,
+            "line-through": isChecked,
           })}
         >
           #{title}
           <div className="flex gap-4">
-            {isDone ? (
+            {isChecked ? (
               <Button onClick={handleUpdateCheck}>
                 <X />
               </Button>
@@ -47,7 +46,7 @@ function TodoList({ title, note, isDone }: TodoListProps) {
                 <Check />
               </Button>
             )}
-            <ModalRemoveTodo title={title} />
+            <ModalRemoveTodo id={id} title={title} />
           </div>
         </CardTitle>
       </CardHeader>
