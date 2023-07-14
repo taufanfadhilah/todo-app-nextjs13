@@ -1,13 +1,10 @@
 import BaseResponse from "@/types/response";
 import { Todo } from "@prisma/client";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { addTodo } from "@/store/todoSlice";
 
-interface TodosResponse extends BaseResponse {
-  data: Todo[];
-}
-
-interface TodoResponse extends BaseResponse {
-  data: Todo;
+interface TodoResponse<T> extends BaseResponse {
+  data: T;
 }
 
 export const todoApi = createApi({
@@ -17,11 +14,19 @@ export const todoApi = createApi({
   }),
   tagTypes: ["todo"],
   endpoints: (builder) => ({
-    getAllTodo: builder.query<TodosResponse, void>({
-      query: () => "/",
+    getAllTodo: builder.query<TodoResponse<Todo[]>, void>({
+      query: () => ({
+        url: "/",
+      }),
       providesTags: ["todo"],
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        const data = (await queryFulfilled).data;
+        data?.data.forEach((todo) => {
+          dispatch(addTodo(todo));
+        });
+      },
     }),
-    insertTodo: builder.mutation<TodoResponse, Partial<Todo>>({
+    insertTodo: builder.mutation<TodoResponse<Todo>, Partial<Todo>>({
       query: (body) => ({
         url: "/",
         method: "POST",
@@ -29,14 +34,14 @@ export const todoApi = createApi({
       }),
       invalidatesTags: ["todo"],
     }),
-    checkTodo: builder.mutation<TodoResponse, string>({
+    checkTodo: builder.mutation<TodoResponse<Todo>, string>({
       query: (id) => ({
         url: `/${id}`,
         method: "PUT",
       }),
       invalidatesTags: ["todo"],
     }),
-    removeTodo: builder.mutation<TodoResponse, string>({
+    removeTodo: builder.mutation<TodoResponse<Todo>, string>({
       query: (id) => ({
         url: `/${id}`,
         method: "DELETE",

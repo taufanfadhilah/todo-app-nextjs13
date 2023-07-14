@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 
 // store
 import { useInsertTodoMutation } from "@/services/todo";
+import { store } from "@/store";
 
 type TodoForm = {
   title: string;
@@ -34,6 +35,8 @@ const schema = yup
   .required();
 
 export default function TodoForm() {
+  const [todoLength, setTodoLength] = useState(0);
+
   const {
     handleSubmit,
     register,
@@ -45,6 +48,10 @@ export default function TodoForm() {
 
   const [insertTodo] = useInsertTodoMutation();
 
+  store.subscribe(() => {
+    setTodoLength(() => store.getState().todo.length);
+  });
+
   const onSubmit: SubmitHandler<TodoForm> = async (data) => {
     insertTodo(data);
     reset();
@@ -55,7 +62,8 @@ export default function TodoForm() {
       <CardHeader>
         <CardTitle>Task Tracker</CardTitle>
         <CardDescription>
-          Stay organized and boost your productivity with Task Tracker.{" "}
+          Stay organized and boost your productivity with Task Tracker. <br />
+          Todo count(s): {todoLength}
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit(onSubmit)}>
