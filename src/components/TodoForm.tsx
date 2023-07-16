@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
 
 // components
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,8 @@ const schema = yup
 
 export default function TodoForm() {
   const [todoLength, setTodoLength] = useState(0);
+
+  const { data: session } = useSession();
 
   const {
     handleSubmit,
@@ -78,6 +81,7 @@ export default function TodoForm() {
               <Input {...register("note")} error={errors.note?.message} />
             </div>
           </div>
+          <small>User: {session?.user?.name}</small>
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button variant="outline" onClick={() => reset()}>
