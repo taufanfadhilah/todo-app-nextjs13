@@ -2,14 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import todoReducer from "./todoSlice";
 import { todoApi } from "@/services/todo";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
+import { authApi } from "@/services/auth";
 
 export const store = configureStore({
   reducer: {
     todo: todoReducer,
     [todoApi.reducerPath]: todoApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(todoApi.middleware),
+    getDefaultMiddleware().concat([todoApi.middleware, authApi.middleware]),
 });
 
 setupListeners(store.dispatch);

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 
 // components
 import Providers from "@/components/Providers";
+import { Toaster } from "@/components/ui/toaster";
 
 // styles
 import "./globals.css";
@@ -19,11 +20,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  
   return (
     <html lang="en">
       <body className={inter.className}>
         <Providers>
           <main className="max-w-[1280px] mx-auto mt-40 px-10">{children}</main>
+          <Toaster />
         </Providers>
       </body>
     </html>
